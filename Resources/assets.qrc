@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="images">
+    <file>windows_icon.ico</file>
+    <file>appDefaultIcon.png</file>
+  </qresource>
+</RCC>
