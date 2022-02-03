@@ -54,8 +54,8 @@
 
 ## About The GUI
 
-This is a Graphical User Interface to make it easier for 4PT users to create their own repository. </br>
-This allow users to avoid the need to modify YML files, and makes creating a repository as easy as dropping the pkgs and selecting the type. </br>
+This is a Graphical User Interface to make it easier for 4PT users to create their own repository. </br></br>
+This allow users to avoid the need to modify YML files, and makes creating a repository as easy as dropping the PKGS and selecting the type. </br></br>
 The GUI also features a mini HTTP server that allows users to host a repository without the need of a hosting service or an APACHE server.
 
 <div id="ss"></div>
