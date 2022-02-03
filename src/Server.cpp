@@ -34,7 +34,9 @@ bool Server::startServer() {
     sb_Options opt;
 
     memset(&opt, 0, sizeof(opt));
+#ifdef _WIN32
     opt.host = getIP().c_str();
+#endif
     opt.port = "80";
     opt.handler = event_handler;
 
