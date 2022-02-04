@@ -4,15 +4,7 @@
 #include "utils.h"
 #include <string>
 
-#ifdef _WIN32
-#include <winsock2.h>
-#include <ws2tcpip.h>
-#include <iphlpapi.h>
-#include <ws2def.h>
-#pragma comment(lib, "Ws2_32.lib")
-#include <windows.h>
-#include <io.h>
-#elif __APPLE__
+#if __APPLE__
 #include <cstdio>
 #include <cstdlib>
 #include <unistd.h>
@@ -24,16 +16,7 @@
 
 #ifdef _WIN32
 std::string getIP(){
-    WSADATA wsa_Data;
-    int wsa_ReturnCode = WSAStartup(0x101,&wsa_Data);
-    char szHostName[255];
-    gethostname(szHostName, 255);
-    struct hostent *host_entry;
-    host_entry=gethostbyname(szHostName);
-    char * szLocalIP;
-    szLocalIP = inet_ntoa (*(struct in_addr *)*host_entry->h_addr_list);
-    WSACleanup();
-    return {szLocalIP};
+    return "0.0.0.0";
 }
 #elif __APPLE__
 
