@@ -375,12 +375,10 @@ void mainView::runServer() {
         runServerButton->setText(tr("Stop Server"));
         std::string IPString = "Server Running on ";
         IPString+= IPAddress;
-        IPString+= ":80";
         serverStatus->setText(tr(IPString.c_str()));
     } else {
         std::string IPString = "Could not start server on ";
         IPString+= IPAddress;
-        IPString+= ":80";
         serverStatus->setText(tr(IPString.c_str()));
     }
 }

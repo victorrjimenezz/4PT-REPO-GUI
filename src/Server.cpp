@@ -35,7 +35,7 @@ bool Server::startServer() {
 
     memset(&opt, 0, sizeof(opt));
 #ifdef _WIN32
-    opt.host = getIP().c_str();
+    opt.host = "0.0.0.0";
 #endif
     opt.port = "80";
     opt.handler = event_handler;
