@@ -7,15 +7,16 @@
 #include "sandbird/sandbird.h"
 #include "PKGUtils/PKGData.h"
 #include <yaml-cpp/yaml.h>
-#include <mutex>
 
 class Server {
 private:
-    static std::mutex srvMtx;
-    int count =0;
     std::string packagePath;
     sb_Server *srv;
+    bool willStop;
+    bool stopped;
+
     YAML::Node * YAML;
+
     static int event_handler(sb_Event *e);
     int handleEvent(sb_Event *e);
     explicit Server(YAML::Node * YAML);

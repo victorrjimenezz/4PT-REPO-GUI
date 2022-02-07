@@ -6,7 +6,6 @@
 #include <thread>
 #include <filesystem>
 
-std::mutex Server::srvMtx;
 Server * Server::mainServer = nullptr;
 
 int Server::event_handler(sb_Event *e) {
@@ -31,6 +30,8 @@ Server::~Server() {
 bool Server::startServer() {
     if(srv!= nullptr)
         return false;
+    willStop = false;
+    stopped = false;
     sb_Options opt;
 
     memset(&opt, 0, sizeof(opt));
@@ -46,9 +47,11 @@ bool Server::startServer() {
 
 }
 bool Server::stopServer() {
-    std::unique_lock<std::mutex> lock(srvMtx);
     if(srv== nullptr)
         return false;
+
+    willStop = true;
+    while(!stopped) continue;
     sb_Server *oldSrv = srv;
     srv = nullptr;
     sb_close_server(oldSrv);
@@ -60,10 +63,10 @@ bool Server::running() {
 }
 
 void Server::poll() {
-    while(srv != nullptr) {
-        std::unique_lock<std::mutex> lock(srvMtx);
+    while(srv != nullptr && !willStop) {
         sb_poll_server(srv, 1000);
     }
+    stopped = true;
 }
 
 int Server::handleEvent(sb_Event *e) {
@@ -134,7 +137,6 @@ bool Server::isIcon(const char *path) {
     return strcasecmp(path,repoIcon.c_str()) == 0;
 }
 bool Server::sendPKG(const char * ID, sb_Event *e){
-    count ++;
     bool hasRange;
     std::string filePath;
     if(!(*YAML)[ID])
