@@ -7,9 +7,11 @@
 #include "sandbird/sandbird.h"
 #include "PKGUtils/PKGData.h"
 #include <yaml-cpp/yaml.h>
+#include <mutex>
 
 class Server {
 private:
+    static std::mutex srvMtx;
     int count =0;
     std::string packagePath;
     sb_Server *srv;

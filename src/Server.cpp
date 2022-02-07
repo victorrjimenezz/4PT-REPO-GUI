@@ -6,7 +6,7 @@
 #include <thread>
 #include <filesystem>
 
-std::mutex mtx;
+std::mutex Server::srvMtx;
 Server * Server::mainServer = nullptr;
 
 int Server::event_handler(sb_Event *e) {
@@ -46,6 +46,7 @@ bool Server::startServer() {
 
 }
 bool Server::stopServer() {
+    std::unique_lock<std::mutex> lock(srvMtx);
     if(srv== nullptr)
         return false;
     sb_Server *oldSrv = srv;
@@ -59,10 +60,10 @@ bool Server::running() {
 }
 
 void Server::poll() {
-    mtx.lock();
-    while(srv != nullptr)
+    while(srv != nullptr) {
+        std::unique_lock<std::mutex> lock(srvMtx);
         sb_poll_server(srv, 1000);
-    mtx.unlock();
+    }
 }
 
 int Server::handleEvent(sb_Event *e) {
