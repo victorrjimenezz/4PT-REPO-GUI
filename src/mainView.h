@@ -29,6 +29,7 @@
 #include <QEvent>
 #include <QDropEvent>
 #include <QMimeData>
+#include <QMetaObject>
 
 #include <list>
 #include <yaml-cpp/yaml.h>
@@ -57,6 +58,7 @@ private slots:
     void changeType();
     void repoNameChanged();
     void selectionChanged(const QItemSelection &selected, const QItemSelection &deselected);
+    void serverStopped();
 protected:
     bool eventFilter(QObject *obj, QEvent *ev) override;
 private:
@@ -104,6 +106,8 @@ private:
     int progressCount;
     QShortcut qShortcut;
     QShortcut qShortcutBack;
+
+    void stopServer();
 
     void addPackageToList(std::string title);
 

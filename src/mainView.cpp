@@ -367,10 +367,9 @@ void mainView::remove() {
 
 void mainView::runServer() {
     if(server->running()) {
-        if(server->stopServer()) {
-            runServerButton->setText(tr("Start Server"));
-            serverStatus->setText(tr("Server Currently Offline"));
-        }
+        runServerButton->setDisabled(true);
+        serverStatus->setText(tr("Stopping Server"));
+        std::thread(&mainView::stopServer,this).detach();
     } else if(server->startServer()){
         runServerButton->setText(tr("Stop Server"));
         std::string IPString = "Server Running on ";
@@ -637,4 +636,14 @@ bool mainView::eventFilter(QObject *obj, QEvent *ev) {
 
 bool mainView::isPKG(const std::string &path) {
     return ends_with(path,".pkg") && std::filesystem::exists(path);
+}
+void mainView::stopServer() {
+    if(server->stopServer())
+        QMetaObject::invokeMethod(this,"serverStopped",Qt::AutoConnection);
+
+}
+void mainView::serverStopped() {
+    runServerButton->setText(tr("Start Server"));
+    serverStatus->setText(tr("Server Currently Offline"));
+    runServerButton->setDisabled(false);
 }
